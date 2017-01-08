@@ -12,7 +12,7 @@ class World {
 		this.physicsWorld.gravity.set(0, 0, -9.82);
 
 		// House test
-		
+
 
 		// Ground
 		var groundBody = new CANNON.Body({
@@ -50,6 +50,22 @@ class World {
 		return this.player;
 	}
 
+	getGraphicsManager() {
+		return this.graphics;
+	}
+
+	getPhysicsWorld() {
+		return this.physicsWorld;
+	}
+
+	getAssetManager() {
+		return this.assets;
+	}
+
+	getInputManager() {
+		return this.input;
+	}
+
 	getPlayerById(id) {
 		var player = undefined;
 		for(var i = 0; i < this.players.length; i ++)
@@ -64,13 +80,12 @@ class World {
 		return player;
 	}
 
-	createPlayer(id, position, facingAngle) {
+	createPlayer(props) {
 
-		var player = new Player(id, position, facingAngle);
-		player.setup(this.graphics, this.input, this.assets, this.physicsWorld);
+		props.world = this;
+		var player = new Player(props);
 
 		this.players.push(player);
-
 		return player;
 	}
 

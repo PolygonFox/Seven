@@ -24,9 +24,12 @@ class NetworkManager
 		this.socket.on('spawn', function(playerInfo) {
 			var id = playerInfo.player.id;
 			var pos = playerInfo.player.position;
-			var facingAngle = playerInfo.player.facingAngle;
-			var player = _this.world.createPlayer(id, new THREE.Vector3(0, 5, 0), facingAngle);
-			player.setControllable(true);
+
+			var player = _this.world.createPlayer({
+				id,
+				position: new THREE.Vector3(0, 5, 0)
+			});
+
 			_this.world.setPlayer(player);
 		});
 
