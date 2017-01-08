@@ -1,11 +1,10 @@
+import Camera from './Camera';
+
 class Player {
 
 	constructor(id, position, facingAngle) {
 
-
 		this.id = id;
-
-		this.forwardDirection = new THREE.Vector3();
 
 		this.controllable = false;
 
@@ -15,8 +14,6 @@ class Player {
 		this.camera = null;
 		this.aimed = false;
 		this.startPosition = position;
-
-
 	}
 
 	getPosition() {
@@ -40,13 +37,6 @@ class Player {
 	}
 
 	setControllable(value) {
-		if(value == true) {
-			this.camera = this.graphics.camera;
-			this.distance = 7;
-
-		} else {
-			this.camera == null;
-		}
 		this.controllable = value;
 	}
 
@@ -88,7 +78,6 @@ class Player {
 		this.mesh.skeleton.bones[10].add(weapon);
 
 		var materials = this.mesh.material.materials;
-
 	  // Setup animations
     for (var k in materials) {
         materials[k].skinning = true;
@@ -108,10 +97,8 @@ class Player {
 		this.rootMesh.add(this.mesh);
 		graphicsManager.scene.add(this.rootMesh);
 
-		this.cameraAngleX = 0;
-		this.cameraAngleY = 0;
+		this.camera = new Camera(this.rootMesh, inputManager, graphicsManager);
 
-		//console.log(this.mesh.material.materials[0].color.setRGB(1, 0.5, 1));
 	}
 
 	update(deltaTime) {
@@ -128,59 +115,7 @@ class Player {
 
 		// Update camera
 		if(this.camera) {
-
-			if(this.input.getAxisZ()) {
-				this.distance += this.input.getAxisZ();
-
-				if(this.distance > 12)
-					this.distance = 12;
-				if(this.distance < 1)
-					this.distance = 1;
-			}
-
-			var offsetAmount = -2;
-
-
-			var cameraPosition = new THREE.Vector3(
-				this.distance * Math.cos(this.cameraAngleX) * Math.sin(this.cameraAngleY),
-				Math.cos(this.cameraAngleY) * this.distance,
-				this.distance * Math.sin(this.cameraAngleX)  * Math.sin(this.cameraAngleY)
-			);
-
-			this.forwardDirection.set(cameraPosition.x, 0, cameraPosition.z).normalize();
-
-
-			var offset = this.forwardDirection.clone().cross(new THREE.Vector3(0, 1, 0).multiplyScalar(offsetAmount))
-			cameraPosition.add(this.rootMesh.position);
-			var lookAtPosition = this.rootMesh.position.clone().add(offset);
-
-			this.camera.position.copy(cameraPosition.add(offset));
-			this.camera.lookAt(lookAtPosition);
-
-			// Camera controls
-			if(this.input.isKeyDown(40)) {
-				this.cameraAngleY += 0.02;
-
-			} else if(this.input.isKeyDown(38)) {
-				this.cameraAngleY -= 0.02;
-
-
-			}
-
-			if(this.input.isKeyDown(37)) {
-				this.cameraAngleX += 0.02;
-			} else if(this.input.isKeyDown(39)) {
-				this.cameraAngleX -= 0.02;
-			}
-
-			this.cameraAngleX += this.input.getAxisX();
-			this.cameraAngleY += this.input.getAxisY();
-
-			if(this.cameraAngleY >= 1.5)
-				this.cameraAngleY = 1.5;
-
-			if(this.cameraAngleY <= 0.01)
-					this.cameraAngleY = 0.01;
+			this.camera.update(deltaTime);
 		}
 
 		// Animation
@@ -191,13 +126,13 @@ class Player {
 
 			// Movement
 			if(this.input.isKeyDown(87)) {
-				v.add(this.forwardDirection.clone().negate());
+				v.add(this.camera.getForwardDirection().clone().negate());
 			} if(this.input.isKeyDown(83)) {
-				v.add(this.forwardDirection.clone());
+				v.add(this.camera.getForwardDirection().clone());
 			} if(this.input.isKeyDown(65)) {
-			  v.add(this.forwardDirection.clone().cross(new THREE.Vector3(0, 1, 0)));
+			  v.add(this.camera.getForwardDirection().clone().cross(new THREE.Vector3(0, 1, 0)));
 			} if(this.input.isKeyDown(68)) {
-				v.add(this.forwardDirection.clone().cross(new THREE.Vector3(0, 1, 0)).negate());
+				v.add(this.camera.getForwardDirection().clone().cross(new THREE.Vector3(0, 1, 0)).negate());
 			}
 			v.normalize().multiplyScalar(this.movementSpeed);
 
@@ -212,20 +147,15 @@ class Player {
 			} else {
 				this.aimed = false;
 			}
-
 		}
-
 
 		// Root mesh rotation
 		if(v.length() && !this.aimed) {
 
 			this.rootMesh.lookAt(this.rootMesh.position.clone().add(v));
 		} else if(this.aimed) {
-			this.rootMesh.lookAt(this.forwardDirection.clone().negate().add(this.rootMesh.position));
+			this.rootMesh.lookAt(this.camera.getForwardDirection().clone().negate().add(this.rootMesh.position));
 		}
-
-
-
 
 		// Apply user inputted velocity
 		this.body.velocity.x += v.x;
