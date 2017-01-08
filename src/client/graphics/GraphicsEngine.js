@@ -1,4 +1,4 @@
-class Engine {
+class graphicsManager {
 
 	constructor(node) {
 
@@ -62,4 +62,4 @@ class Engine {
 
 }
 
-export default Engine;
+export default graphicsManager;

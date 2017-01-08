@@ -2,7 +2,7 @@ import * as THREE from 'three';
 
 import InputManager from './client/input/InputManager';
 import NetworkManager from './client/networking/NetworkManager';
-import GraphicsEngine from './client/graphics/Engine';
+import GraphicsEngine from './client/graphics/GraphicsEngine';
 import AssetManager from './client/AssetManager';
 import World from './client/World';
 
