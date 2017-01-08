@@ -126,13 +126,13 @@ class Player {
 
 			// Movement
 			if(this.input.isKeyDown(87)) {
-				v.add(this.camera.getForwardDirection().clone().negate());
-			} if(this.input.isKeyDown(83)) {
 				v.add(this.camera.getForwardDirection().clone());
+			} if(this.input.isKeyDown(83)) {
+				v.add(this.camera.getForwardDirection().clone().negate());
 			} if(this.input.isKeyDown(65)) {
-			  v.add(this.camera.getForwardDirection().clone().cross(new THREE.Vector3(0, 1, 0)));
+			  v.add(this.camera.getForwardDirection().clone().cross(new THREE.Vector3(0, -1, 0)));
 			} if(this.input.isKeyDown(68)) {
-				v.add(this.camera.getForwardDirection().clone().cross(new THREE.Vector3(0, 1, 0)).negate());
+				v.add(this.camera.getForwardDirection().clone().cross(new THREE.Vector3(0, 1, 0)));
 			}
 			v.normalize().multiplyScalar(this.movementSpeed);
 

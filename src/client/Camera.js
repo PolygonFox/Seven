@@ -15,6 +15,7 @@ class Camera {
   }
 
   getForwardDirection() {
+
     return this.forwardDirection;
   }
 
@@ -35,9 +36,10 @@ class Camera {
       				this.distance * Math.sin(this.cameraAngleX)  * Math.sin(this.cameraAngleY)
       			);
 
-      			this.forwardDirection.set(cameraPosition.x, 0, cameraPosition.z).normalize();
+            console.log(this.forwardDirection);
+      			this.forwardDirection.set(-cameraPosition.x, 0, -cameraPosition.z).normalize();
 
-      			var offset = this.forwardDirection.clone().cross(new THREE.Vector3(0, 1, 0).multiplyScalar(-2))
+      			var offset = this.forwardDirection.clone().cross(new THREE.Vector3(0, 1, 0).multiplyScalar(2))
       			cameraPosition.add(this.target.position);
       			var lookAtPosition = this.target.position.clone().add(offset);
 
