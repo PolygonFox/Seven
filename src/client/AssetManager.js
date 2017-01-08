@@ -28,10 +28,12 @@ class AssetManager {
 
 				for (var k in mat.materials) {
 					if(mat.materials[k].map)
-					{
 			        	mat.materials[k].map.wrapS = mat.materials[k].map.wrapT = THREE.RepeatWrapping;
-					}
-			    }
+
+					if(mat.materials[k].bumpMap)
+							  mat.materials[k].bumpMap.wrapS = mat.materials[k].bumpMap.wrapT = THREE.RepeatWrapping;
+
+				}
 
 				_this.geometries[hex] = geometry;
 				_this.materials[hex] = mat;

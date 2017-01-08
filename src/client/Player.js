@@ -37,6 +37,11 @@ class Player {
 	}
 
 	setControllable(value) {
+
+		if(value == true) {
+			this.camera = new Camera(this.rootMesh, this.input, this.graphics);
+		}
+
 		this.controllable = value;
 	}
 
@@ -72,7 +77,6 @@ class Player {
 		this.mesh.castShadow = true;
 		this.mesh.receiveShadow = true;
 
-
 		// Weapon
 		var weapon = assetManager.createMesh(0x100000);
 		this.mesh.skeleton.bones[10].add(weapon);
@@ -96,9 +100,6 @@ class Player {
 
 		this.rootMesh.add(this.mesh);
 		graphicsManager.scene.add(this.rootMesh);
-
-		this.camera = new Camera(this.rootMesh, inputManager, graphicsManager);
-
 	}
 
 	update(deltaTime) {
@@ -154,7 +155,7 @@ class Player {
 
 			this.rootMesh.lookAt(this.rootMesh.position.clone().add(v));
 		} else if(this.aimed) {
-			this.rootMesh.lookAt(this.camera.getForwardDirection().clone().negate().add(this.rootMesh.position));
+			this.rootMesh.lookAt(this.camera.getForwardDirection().clone().add(this.rootMesh.position));
 		}
 
 		// Apply user inputted velocity

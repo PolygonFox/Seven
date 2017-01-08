@@ -36,7 +36,6 @@ class Camera {
       				this.distance * Math.sin(this.cameraAngleX)  * Math.sin(this.cameraAngleY)
       			);
 
-            console.log(this.forwardDirection);
       			this.forwardDirection.set(-cameraPosition.x, 0, -cameraPosition.z).normalize();
 
       			var offset = this.forwardDirection.clone().cross(new THREE.Vector3(0, 1, 0).multiplyScalar(2))
