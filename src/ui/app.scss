@@ -1,0 +1,26 @@
+* {
+	margin: 0px;
+	padding: 0px;
+}
+
+canvas {
+	display: block;
+}
+
+html, body {
+	height: 100%;
+}
+
+body {
+	background: #222;
+	color: #FFF;
+
+	font-family: Arial;
+}
+
+#root {
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 2; 
+}

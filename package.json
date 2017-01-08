@@ -1,0 +1,43 @@
+{
+  "name": "WebpackDemo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "webpack-dev-server --history-api-fallback --host 192.168.2.69 --no-info --colors --inline --hot --port 7788 --content-base dist/",
+    "start-server": "node ./src/server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "babel-core": "^6.21.0",
+    "babel-loader": "^6.2.10",
+    "babel-preset-es2015": "^6.18.0",
+    "babel-preset-react": "^6.16.0",
+    "css-loader": "^0.26.1",
+    "node-sass": "^4.1.1",
+    "react-hot-loader": "^3.0.0-beta.6",
+    "redux-devtools": "^3.3.1",
+    "sass-loader": "^4.1.1",
+    "style-loader": "^0.13.1",
+    "webpack": "^1.14.0",
+    "webpack-dev-server": "^1.16.2"
+  },
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "cannon": "^0.6.2",
+    "express": "^4.14.0",
+    "fullscreen": "^1.1.0",
+    "pointer-lock": "0.0.4",
+    "react": "^15.4.1",
+    "react-dom": "^15.4.1",
+    "react-redux": "^5.0.1",
+    "react-router": "^3.0.0",
+    "react-toolbox": "^1.3.3",
+    "redux": "^3.6.0",
+    "socket.io": "^1.7.2",
+    "three": "^0.83.0",
+    "underscore": "^1.8.3"
+  }
+}
