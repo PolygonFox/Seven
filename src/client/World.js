@@ -8,6 +8,8 @@ class World {
 		this.input = inputManager;
 		this.assets = assetManager;
 
+		this.shootableObjects = [];
+
 		// Physics
 		this.physicsWorld = new CANNON.World();
 		this.physicsWorld.gravity.set(0, 0, -9.82);
@@ -33,6 +35,7 @@ class World {
 		mesh.scale.setScalar(10);
 		mesh.receiveShadow = true;
 		this.graphics.scene.add(mesh);
+		this.shootableObjects.push(mesh);
 
 		var mesh = assetManager.createMesh(0x000002);
 		mesh.position.set(5, 0, 0);
@@ -40,6 +43,15 @@ class World {
 		mesh.receiveShadow = true;
 		mesh.castShadow = true;
 		this.graphics.scene.add(mesh);
+		this.shootableObjects.push(mesh);
+
+		var mesh = assetManager.createMesh(0x000002);
+		mesh.position.set(-7.5, 0, 0);
+		mesh.scale.setScalar(3);
+		mesh.receiveShadow = true;
+		mesh.castShadow = true;
+		this.graphics.scene.add(mesh);
+		this.shootableObjects.push(mesh);
 	}
 
 	getPlayer() {

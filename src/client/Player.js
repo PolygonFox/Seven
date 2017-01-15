@@ -9,12 +9,44 @@ class Player extends Character {
 
 		this.input = this.world.getInputManager();
 		this.camera = new Camera(this.rootMesh, this.input, this.world.getGraphicsManager());
+
+		this.damagePrefab = this.world.getAssetManager().createMesh(0x100100);
+		this.damagePrefab.scale.setScalar(0.2);
+		this.damageObjects = []; // max 32
+		this.fireRate = 4;
+		this.fireRateCounter = 0;
+		this.muzzleFlash = this.world.getAssetManager().createMesh(0x100200);
+		this.muzzleFlash.position.x = 1.5;
+		this.muzzleFlash.position.z = 0.1;
+		this.muzzleFlash.position.y = 0.05;
+		this.muzzleFlash.visible = false;
+		this.weapon.add(this.muzzleFlash);
+	}
+
+	createDamage(point, normal) {
+		if(this.damageObjects.length >= 32) {
+			this.world.getGraphicsManager().scene.remove(this.damageObjects[0]);
+			this.damageObjects.shift();
+		}
+		var damage = this.damagePrefab.clone();
+		damage.position.copy(normal.clone().multiplyScalar(0.01).add(point));
+		damage.lookAt(normal.clone().negate().add(point));
+		this.world.getGraphicsManager().scene.add(damage);
+		this.damageObjects.push(damage);
+
+		for(var i = 0; i < this.damageObjects.length; i ++)
+		{
+			this.damageObjects[i].renderOrder = i / 32;
+			this.damageObjects[i].translateZ(0.0001);
+
+		}
+
 	}
 
 	update(deltaTime) {
 
 		super.update(deltaTime);
-
+		this.muzzleFlash.visible = false;
 		// Update camera
 		this.camera.update(deltaTime);
 
@@ -43,6 +75,28 @@ class Player extends Character {
 			this.aimed = false;
 		}
 
+		// Shoot
+		if(this.input.isMouseDown(0) && this.fireRateCounter == 0) {
+			this.muzzleFlash.visible = true;
+			// Raycast
+			var raycaster = new THREE.Raycaster();
+			if(this.aimed) {
+				raycaster.set(this.rootMesh.position, this.camera.getLookAtDirection());
+			} else {
+				raycaster.set(this.rootMesh.position, v);
+			}
+
+			var hits  = raycaster.intersectObjects(this.world.shootableObjects);
+
+			if(hits[0]) {
+
+					this.createDamage(hits[0].point, hits[0].face.normal);
+			}
+
+			this.fireRateCounter = this.fireRate;
+
+		}
+
 		// Look at
 		if(v.length() && !this.aimed) {
 			this.rootMesh.lookAt(this.rootMesh.position.clone().add(v));
@@ -63,6 +117,10 @@ class Player extends Character {
 
 		// Sync rootMesh position with body position.
 		this.rootMesh.position.set(this.body.position.x, this.body.position.z, this.body.position.y);
+
+		if(this.fireRateCounter > 0) {
+			this.fireRateCounter--;
+		}
 	}
 
 }

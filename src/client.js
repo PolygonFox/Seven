@@ -54,3 +54,5 @@ var world,
 
 	// Weapon assets
 	assetManager.load(0x100000, "./assets/weapons/", "Pistol");
+	assetManager.load(0x100100, "./assets/weapons/", "damage");
+	assetManager.load(0x100200, "./assets/weapons/", "Muzzleflash");

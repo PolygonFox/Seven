@@ -15,6 +15,7 @@ class Character {
 
     this.activeWeapon = null;
 
+
   }
 
   setupPhysics() {
@@ -51,7 +52,7 @@ class Character {
   // Weapon
     var weapon = assets.createMesh(0x100000);
     this.mesh.skeleton.bones[10].add(weapon);
-
+    this.weapon = weapon;
     var materials = this.mesh.material.materials;
 
     // Setup animations

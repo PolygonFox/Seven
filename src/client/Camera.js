@@ -12,11 +12,17 @@ class Camera {
 		this.cameraAngleY = 0;
 
     this.forwardDirection = new THREE.Vector3();
+    this.lookAtDirection = new THREE.Vector3();
   }
 
   getForwardDirection() {
 
     return this.forwardDirection;
+  }
+
+  getLookAtDirection() {
+
+    return this.lookAtDirection;
   }
 
   update(delta) {
@@ -36,7 +42,8 @@ class Camera {
       				this.distance * Math.sin(this.cameraAngleX)  * Math.sin(this.cameraAngleY)
       			);
 
-      			this.forwardDirection.set(-cameraPosition.x, 0, -cameraPosition.z).normalize();
+            this.forwardDirection.set(-cameraPosition.x, 0, -cameraPosition.z).normalize();
+            this.lookAtDirection.set(-cameraPosition.x, -cameraPosition.y, -cameraPosition.z).normalize();
 
       			var offset = this.forwardDirection.clone().cross(new THREE.Vector3(0, 1, 0).multiplyScalar(2))
       			cameraPosition.add(this.target.position);
