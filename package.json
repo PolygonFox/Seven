@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "webpack-dev-server --history-api-fallback --host 192.168.2.69 --no-info --colors --inline --hot --port 7788 --content-base dist/",
+    "start": "webpack-dev-server --history-api-fallback --host 127.0.0.1 --no-info --colors --inline --hot --port 7788 --content-base dist/",
     "start-server": "node ./src/server.js"
   },
   "keywords": [],

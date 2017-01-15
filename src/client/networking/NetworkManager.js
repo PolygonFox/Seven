@@ -29,42 +29,42 @@ class NetworkManager
 				id,
 				position: new THREE.Vector3(0, 5, 0)
 			});
-
-			_this.world.setPlayer(player);
 		});
 
 		this.socket.on('snapshot', function(data){
+
 			// Update players
 			for(var i = 0; i < data.length; i++)
-			//for(var i = 0; i < 0; i++)
 			{
 
 				if(data[i][0] != _this.world.getPlayer().id) {
 
-					var p = _this.world.getPlayerById(data[i][0]);
-
+					var character = _this.world.getCharacterById(data[i][0]);
 
 					// FindOrNew
-					if(!p) {
-						p = _this.world.createPlayer(data[i][0], new CANNON.Vec3(data[i][1], data[i][2], data[i][3]));
+					if(!character) {
+						character = _this.world.createCharacter({
+							id: data[i][0],
+							position: new CANNON.Vec3(data[i][1], data[i][2], data[i][3])
+						});
 					}
 
 					// Can we set props here?
-					var pos = p.getPosition();
-					p.setPosition(new CANNON.Vec3(
+					var pos = character.getPosition();
+					character.setPosition(new CANNON.Vec3(
 						pos.x + (data[i][1] - pos.x) * 0.1,
 						pos.y + (data[i][2] - pos.y) * 0.1,
 						pos.z + (data[i][3] - pos.z ) * 0.1
 					));
 
-					var v = p.getVelocity();
-					p.setVelocity(new CANNON.Vec3(
+					var v = character.getVelocity();
+					character.setVelocity(new CANNON.Vec3(
 						v.x + (data[i][4] - v.x) * 0.1,
 						v.y + (data[i][5] - v.y) * 0.1,
 						v.z + (data[i][6] - v.z ) * 0.1
 					));
 
-					var r = p.getRotation();
+					var r = character.getRotation();
 						r.x = r.x + (data[i][7] - r.x) * 1;
 						r.y = r.y + (data[i][8] - r.y) * 1;
 						r.z = r.z + (data[i][9] - r.z ) * 1;

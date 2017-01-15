@@ -47,7 +47,6 @@ io.on('connection', function(socket){
 		socket.player.position.set(data.pos.x, data.pos.y, data.pos.z);
     socket.player.velocity.set(data.v.x, data.v.y, data.v.z);
 		socket.player.rotation.set(data.rot[0], data.rot[1], data.rot[2]);
-
 	});
 
 	socket.on('disconnect', function(){

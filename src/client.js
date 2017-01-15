@@ -16,11 +16,32 @@ var world,
 		paused = false;
 
 	var assetManager = new AssetManager(() => {
+
 	graphicsEngine = new GraphicsEngine(document.getElementById('graphics_root'));
 	inputManager = new InputManager(graphicsEngine.getDomElement());
 	world = new World(graphicsEngine, inputManager, assetManager);
-	networkManager = new NetworkManager('192.168.2.69', '7777', world);
+	networkManager = new NetworkManager('http://127.0.0.1', '7777', world);
 	clock = new THREE.Clock();
+
+	window.addEventListener('blur', function(){
+		clock.stop();
+		paused = true;
+	});
+
+	window.addEventListener('focus', function(){
+		clock.start();
+		paused = false;
+	});
+
+	// Engine tick
+	var tick = function() {
+		requestAnimationFrame( tick.bind(this) );
+		if(!paused) {
+			world.update(clock.getDelta());
+			graphicsEngine.tick();
+			inputManager.update();
+		}
+	}
 
 	tick();
 }, (assetsToLoad) => {
@@ -33,23 +54,3 @@ var world,
 
 	// Weapon assets
 	assetManager.load(0x100000, "./assets/weapons/", "Pistol");
-
-window.addEventListener('blur', function(){
-	clock.stop();
-	paused = true;
-});
-
-window.addEventListener('focus', function(){
-	clock.start();
-	paused = false;
-});
-
-// Engine tick
-var tick = function() {
-	requestAnimationFrame( tick.bind(this) );
-	if(!paused) {
-		world.update(clock.getDelta());
-		graphicsEngine.tick();
-		inputManager.update();
-	}
-}

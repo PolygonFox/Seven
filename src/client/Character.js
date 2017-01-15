@@ -12,6 +12,9 @@ class Character {
 
     this.setupPhysics();
     this.setupGraphics();
+
+    this.activeWeapon = null;
+
   }
 
   setupPhysics() {
@@ -45,7 +48,7 @@ class Character {
     this.mesh.castShadow = true;
     this.mesh.receiveShadow = true;
 
-    // Weapon
+  // Weapon
     var weapon = assets.createMesh(0x100000);
     this.mesh.skeleton.bones[10].add(weapon);
 
@@ -92,8 +95,8 @@ class Character {
 	}
 
 	setPosition(pos) {
-		return this.body.position = pos;
-	}
+    this.body.position = pos;
+  }
 
 	getVelocity() {
 		return this.body.velocity;

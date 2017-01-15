@@ -7,7 +7,8 @@ module.exports ={
 	],
 	output: {
 		filename: "bundle.js",
-		path: "./dist"
+		path: "./dist",
+		publicPath: 'http://localhost:7788/'
 	},
 	module: {
 		loaders: [
@@ -31,8 +32,6 @@ module.exports ={
 			}
 		]
 	},
-	alias: {
-	},
 	plugins: [
 		new webpack.ProvidePlugin({
 			'THREE': 'three/build/three.min.js',
@@ -40,6 +39,8 @@ module.exports ={
 		})
 	],
 	devServer: {
+			contentBase: './dist/',
+			publicPath: 'http://localhost:7788/',
 	    proxy: [{
 	    	path: '/api/*',
 	    	target: 'http://localhost:3002'
